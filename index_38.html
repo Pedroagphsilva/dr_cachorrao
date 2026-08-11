@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doutor Cachorrão — Pet &amp; Vet | Vargem Grande do Sul-SP</title>
+<meta name="description" content="Doutor Cachorrão — Pet & Vet em Vargem Grande do Sul-SP. Banho & tosa, consultas veterinárias, daycare, hotelzinho e uma loja completa. Cuidado, carinho e diversão pro seu pet.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Doutor Cachorrão — Pet & Vet">
+<meta property="og:description" content="O petshop onde cada latido, miado e rabinho abanando encontra cuidado, carinho e diversão.">
+<meta property="og:locale" content="pt_BR">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+<!-- dotLottie web component (animacoes LottieFiles) -->
+<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+
+<style>
+/* ============================================================
+   DESIGN TOKENS — Doutor Cachorrão
+   ============================================================ */
+:root{
+  /* Paleta da marca */
+  --laranja:#F08000;
+  --laranja-esc:#D66E00;
+  --amarelo:#FFE000;
+  --amarelo-claro:#FFEB57;
+  --marrom:#2E1A05;
+  --marrom-suave:#4A3218;
+  --creme:#F3F0D1;
+  --creme-claro:#F8F6E4;
+  --branco:#FFFFFF;
+
+  /* Aplicações semânticas */
+  --texto:var(--marrom);
+  --texto-suave:var(--marrom-suave);
+  --fundo:var(--creme-claro);
+  --primaria:var(--laranja);
+  --secundaria:var(--amarelo);
+
+  --radius:22px;
+  --radius-lg:34px;
+  --pill:999px;
+  --maxw:1180px;
+
+  --ff-display:"Baloo 2",system-ui,sans-serif;
+  --ff-body:"Nunito",system-ui,sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--ff-body);
+  color:var(--texto);
+  background:var(--fundo);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
+
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:24px}
+.laranja{color:var(--laranja)}
+.amarelo{color:var(--amarelo)}
+
+/* Botão pill */
+.btn{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--ff-display);font-weight:700;font-size:1rem;
+  padding:15px 26px;border-radius:var(--pill);cursor:pointer;
+  border:none;transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.btn:hover{transform:translateY(-3px)}
+.btn-primario{background:var(--laranja);color:#fff;box-shadow:0 10px 24px rgba(240,128,0,.35)}
+.btn-primario:hover{background:var(--laranja-esc);box-shadow:0 14px 30px rgba(240,128,0,.45)}
+.btn .paw{
+  width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.28);
+  display:grid;place-items:center;font-size:15px;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-header{position:absolute;top:0;left:0;right:0;z-index:50;padding-top:22px}
+.nav{
+  max-width:var(--maxw);margin-inline:auto;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  background:rgba(243,240,209,.92);backdrop-filter:blur(10px);
+  border:1px solid rgba(46,26,5,.10);
+  border-radius:var(--pill);padding:12px 16px 12px 26px;
+  margin-inline:24px;box-shadow:0 8px 24px rgba(46,26,5,.12);
+}
+.nav-logo img{height:42px;width:auto}
+.nav-links{display:flex;align-items:center;gap:8px;list-style:none}
+.nav-links a{
+  font-family:var(--ff-display);font-weight:600;color:var(--marrom);
+  padding:9px 16px;border-radius:var(--pill);font-size:.95rem;
+  transition:background .2s ease, color .2s ease;
+}
+.nav-links a:hover{background:rgba(240,128,0,.14);color:var(--laranja)}
+.nav-links a.ativo{background:var(--laranja);color:#fff}
+.nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:8px}
+.nav-toggle span{display:block;width:26px;height:3px;background:var(--marrom);border-radius:2px;margin:5px 0;transition:.3s}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  position:relative;
+  background:linear-gradient(170deg,var(--laranja) 0%,var(--laranja-esc) 100%);
+  padding:150px 0 90px;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 78% 34%, rgba(255,224,0,.35), transparent 42%);
+  pointer-events:none;
+}
+.hero-grid{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;
+}
+.hero h1{font-size:clamp(2.6rem,5vw,4rem);color:#fff}
+.hero h1 .amarelo{color:var(--amarelo)}
+.hero p{color:rgba(255,255,255,.9);font-size:1.1rem;max-width:440px;margin:22px 0 32px}
+.hero-art{position:relative;min-height:420px}
+.hero-blobs{position:absolute;inset:0;display:grid;place-items:center}
+.hero-blobs svg{width:90%;max-width:460px;filter:drop-shadow(0 20px 40px rgba(46,26,5,.25))}
+.hero-pets{
+  position:relative;z-index:2;width:88%;max-width:440px;margin-inline:auto;
+  filter:drop-shadow(0 24px 30px rgba(46,26,5,.3));
+}
+.bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+
+/* ============================================================
+   FAIXA CORRIDA (marquee)
+   ============================================================ */
+.marquee{background:var(--laranja);color:#fff;overflow:hidden;padding:14px 0;position:relative;z-index:4}
+.marquee-track{
+  display:flex;width:max-content;align-items:center;
+  animation:scroll 22s linear infinite;
+  font-family:var(--ff-display);font-weight:700;font-size:1.15rem;
+}
+.marquee-group{display:flex;align-items:center;gap:38px;padding-right:38px;flex-shrink:0}
+.marquee-group .paw-ico{opacity:.9}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee:hover .marquee-track{animation-play-state:paused}
+
+/* ============================================================
+   SEÇÃO: CARD BRANCO SOBRE FUNDO AMARELO
+   ============================================================ */
+.encontra{background:var(--amarelo);padding:56px 0 90px;position:relative}
+.encontra-inner{
+  background:var(--creme);border-radius:var(--radius-lg);
+  position:relative;z-index:3;
+  padding:52px 40px;box-shadow:0 24px 60px rgba(46,26,5,.12);
+}
+.encontra h2{
+  text-align:center;font-size:clamp(1.8rem,3.6vw,2.6rem);
+  color:var(--laranja);margin-bottom:40px;
+}
+.encontra h2 .marrom{color:var(--marrom)}
+.cards-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card-serv{
+  background:var(--laranja);border-radius:var(--radius);
+  padding:22px 18px;text-align:center;color:#fff;
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+.card-serv:hover{transform:translateY(-8px);box-shadow:0 18px 34px rgba(240,128,0,.3)}
+.card-serv .ico{
+  width:100%;aspect-ratio:1/.82;background:var(--creme-claro);border-radius:16px;
+  display:grid;place-items:center;margin-bottom:16px;
+}
+.card-serv .ico svg{width:56%;height:56%;stroke:#c95e00;color:#c95e00}
+.card-serv .ico .lottie-ico{width:78%;height:78%;display:block}
+.card-serv h3{font-size:1.02rem;font-weight:700;color:#fff}
+
+/* ============================================================
+   SEÇÃO: CUIDAR COM AMOR
+   ============================================================ */
+.amor{background:var(--amarelo);padding:20px 0 100px}
+.amor-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.amor-art{position:relative;display:grid;place-items:center;min-height:360px}
+.amor-art .dog{width:74%;max-width:340px;position:relative;z-index:2;filter:drop-shadow(0 18px 24px rgba(46,26,5,.22))}
+.orbit{position:absolute;inset:0;display:grid;place-items:center;z-index:1}
+.orbit svg{width:82%;max-width:400px}
+.badge{
+  position:absolute;width:52px;height:52px;border-radius:50%;
+  display:grid;place-items:center;box-shadow:0 8px 18px rgba(46,26,5,.2);z-index:3;font-size:22px;
+}
+.badge-1{background:var(--laranja);color:#fff;top:24%;left:8%}
+.badge-2{background:#fff;color:var(--laranja);top:8%;left:28%}
+.badge-3{background:var(--laranja);color:#fff;bottom:20%;left:14%}
+.amor-txt h2{font-size:clamp(1.9rem,3.8vw,2.7rem);color:var(--laranja)}
+.amor-txt h2 .marrom{color:var(--marrom)}
+.amor-txt p{margin-top:22px;color:var(--marrom-suave);font-size:1.05rem;max-width:440px}
+
+/* ============================================================
+   SEÇÃO: SERVIÇOS (grid 2x2 laranja)
+   ============================================================ */
+.servicos{background:var(--creme-claro);padding:100px 0}
+.servicos-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:center}
+.servicos-tit h2{font-size:clamp(2rem,4vw,2.9rem);color:var(--marrom)}
+.servicos-tit h2 .laranja{color:var(--laranja)}
+.serv-cards{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.serv-card{
+  background:var(--laranja);color:#fff;border-radius:var(--radius);
+  padding:30px 26px;transition:transform .3s ease, box-shadow .3s ease;
+}
+.serv-card:hover{transform:translateY(-8px);box-shadow:0 20px 38px rgba(240,128,0,.32)}
+.serv-card .ico{width:56px;height:56px;margin-bottom:18px}
+.serv-card .ico svg{width:100%;height:100%;stroke:#fff}
+.serv-card h3{font-size:1.35rem;font-weight:800;margin-bottom:10px;color:#fff}
+.serv-card p{font-size:.92rem;color:rgba(255,255,255,.92);line-height:1.5}
+
+/* ============================================================
+   SEÇÃO: DEPOIMENTOS
+   ============================================================ */
+.depo{background:var(--creme);padding:20px 0 90px}
+.depo-inner{
+  background:var(--laranja);border-radius:var(--radius-lg);
+  padding:56px 44px;display:grid;grid-template-columns:.8fr 1.2fr;gap:44px;align-items:center;
+  box-shadow:0 24px 60px rgba(240,128,0,.22);
+}
+.depo-tit h2{font-size:clamp(1.9rem,3.8vw,2.6rem);color:#fff}
+.depo-tit h2 .amarelo{color:var(--amarelo)}
+.depo-cards{display:flex;flex-direction:column;gap:18px}
+.depo-card{
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+  border-radius:18px;padding:20px 22px;color:#fff;max-width:400px;
+}
+.depo-card:nth-child(2){align-self:flex-end}
+.depo-card p{font-size:1rem;margin-bottom:12px}
+.depo-autor{display:flex;align-items:center;gap:10px;font-size:.9rem}
+.depo-autor .dot{width:26px;height:26px;border-radius:50%;background:var(--amarelo)}
+.depo-autor b{color:var(--amarelo)}
+
+/* ============================================================
+   SEÇÃO: CTA + MAPA
+   ============================================================ */
+.visita{background:var(--creme-claro);padding:80px 0 0;text-align:center}
+.visita h2{font-size:clamp(1.9rem,4vw,2.8rem);color:var(--marrom)}
+.visita h2 .laranja{color:var(--laranja)}
+.visita p{color:var(--marrom-suave);margin:16px 0 34px;font-size:1.05rem}
+.mapa-wrap{margin-top:40px}
+.mapa-wrap iframe{
+  width:100%;height:420px;border:0;display:block;
+  border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+  filter:saturate(.9);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{background:var(--creme);padding:56px 0 28px;color:var(--marrom-suave)}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.3fr;gap:36px}
+.footer-brand img{height:48px;margin-bottom:14px}
+.footer-brand p{font-size:.92rem;max-width:230px}
+.footer h4{font-family:var(--ff-display);color:var(--laranja);font-size:1.05rem;margin-bottom:14px}
+.footer ul{list-style:none}
+.footer ul li{margin-bottom:9px;font-size:.92rem}
+.footer ul li a:hover{color:var(--laranja)}
+.footer-contato li{display:flex;align-items:flex-start;gap:10px}
+.footer-contato .ic{color:var(--laranja);flex-shrink:0;margin-top:3px}
+.footer-bottom{
+  border-top:1px solid rgba(46,26,5,.12);margin-top:40px;padding-top:20px;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.85rem;
+}
+.footer-bottom a{color:var(--laranja);font-weight:600}
+.footer-bottom a:hover{text-decoration:underline}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+@media(max-width:900px){
+  .hero-grid,.amor-grid,.servicos-grid,.depo-inner{grid-template-columns:1fr}
+  .hero-art{min-height:340px;order:-1}
+  .cards-4{grid-template-columns:1fr 1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .depo-card:nth-child(2){align-self:auto}
+  .nav-links{
+    position:absolute;top:calc(100% + 10px);left:24px;right:24px;
+    flex-direction:column;align-items:stretch;
+    background:var(--marrom);border-radius:var(--radius);padding:14px;gap:6px;
+    display:none;
+  }
+  .nav-links.aberto{display:flex}
+  .nav-links a{text-align:center}
+  .nav-toggle{display:block}
+}
+@media(max-width:560px){
+  .cards-4{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .serv-cards{grid-template-columns:1fr}
+  .encontra-inner{padding:36px 22px}
+  .depo-inner{padding:40px 24px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .marquee-track{animation:none}
+}
+
+/* ===== Cookie consent (banner) — tokens alinhados a marca ===== */
+:root{
+  --cc-ink:#2E1A05;        /* marrom da marca no lugar do #1c1c1c */
+  --cc-orange:#F08000;
+  --cc-orange-dark:#D66E00;
+  --cc-gray:#6b7280;
+  --cc-light:#F3F0D1;      /* creme da marca */
+  --cc-white:#ffffff;
+  --cc-border:#e5e7eb;
+}
+
+#cc-consent-banner {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 99999;
+    background: var(--cc-ink);
+    color: #f3f4f6;
+    padding: 18px 22px;
+    box-shadow: 0 -4px 18px rgba(0,0,0,.25);
+    font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+    display: none;
+  }
+  #cc-consent-banner.cc-visible { display: block; }
+  #cc-consent-banner .cc-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+  #cc-consent-banner .cc-logo { height: 30px; flex-shrink: 0; }
+  #cc-consent-banner .cc-text { flex: 1 1 380px; font-size: 13.5px; line-height: 1.55; color: #e5e7eb; }
+  #cc-consent-banner .cc-text a { color: var(--cc-orange); text-decoration: underline; }
+  #cc-consent-banner .cc-actions { display: flex; gap: 10px; flex-wrap: wrap; flex-shrink: 0; }
+
+  .cc-btn {
+    font-family: inherit; font-size: 13.5px; font-weight: 600; border-radius: 7px;
+    padding: 10px 16px; cursor: pointer; border: 1px solid transparent; white-space: nowrap;
+  }
+  .cc-btn-primary { background: var(--cc-orange); color: #1c1c1c; }
+  .cc-btn-primary:hover { background: var(--cc-orange-dark); }
+  .cc-btn-secondary { background: transparent; color: #f3f4f6; border-color: #4b5563; }
+  .cc-btn-secondary:hover { background: rgba(255,255,255,.08); }
+  .cc-btn-link { background: transparent; color: #f3f4f6; text-decoration: underline; padding: 10px 6px; }
+
+  /* Botão flutuante para reabrir preferências a qualquer momento */
+  #cc-reopen-btn {
+    position: fixed; left: 18px; bottom: 18px; z-index: 99998;
+    background: var(--cc-ink); color: #f3f4f6; border: 1px solid #4b5563;
+    border-radius: 999px; padding: 9px 14px; font-size: 12.5px; font-family: inherit;
+    cursor: pointer; display: none; align-items: center; gap: 6px; box-shadow: 0 2px 10px rgba(0,0,0,.2);
+  }
+  #cc-reopen-btn.cc-visible { display: inline-flex; }
+  #cc-reopen-btn:hover { background: #2a2a2a; }
+
+  /* Modal de preferências */
+  #cc-modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 100000;
+    display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  #cc-modal-overlay.cc-visible { display: flex; }
+  #cc-modal {
+    background: #fff; color: var(--cc-ink); border-radius: 12px; max-width: 560px; width: 100%;
+    max-height: 88vh; overflow-y: auto; font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  }
+  #cc-modal .cc-modal-head {
+    display: flex; align-items: center; gap: 12px; padding: 20px 22px 14px;
+    border-bottom: 1px solid var(--cc-border);
+  }
+  #cc-modal .cc-modal-head img { height: 26px; }
+  #cc-modal .cc-modal-head h2 { font-size: 16px; margin: 0; flex: 1; color: var(--cc-ink); }
+  #cc-modal .cc-modal-close {
+    border: none; background: transparent; font-size: 20px; line-height: 1; cursor: pointer; color: var(--cc-gray);
+  }
+  #cc-modal .cc-modal-body { padding: 16px 22px; }
+  #cc-modal .cc-modal-intro { font-size: 13px; color: #4b5563; line-height: 1.6; margin-bottom: 14px; }
+  .cc-category {
+    display: flex; justify-content: space-between; gap: 14px; align-items: flex-start;
+    padding: 14px 0; border-bottom: 1px solid var(--cc-border);
+  }
+  .cc-category:last-child { border-bottom: none; }
+  .cc-category-info h3 { font-size: 14px; margin: 0 0 4px; color: var(--cc-ink); }
+  .cc-category-info p { font-size: 12.5px; color: #6b7280; margin: 0; line-height: 1.5; }
+  .cc-category-tag {
+    display: inline-block; font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    background: var(--cc-light); color: var(--cc-orange-dark); border-radius: 4px; padding: 2px 7px; margin-bottom: 6px;
+  }
+
+  /* Toggle switch */
+  .cc-switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+  .cc-switch input { opacity: 0; width: 0; height: 0; }
+  .cc-slider {
+    position: absolute; cursor: pointer; inset: 0; background: #d1d5db; border-radius: 999px; transition: .2s;
+  }
+  .cc-slider::before {
+    content: ""; position: absolute; height: 18px; width: 18px; left: 3px; top: 3px;
+    background: #fff; border-radius: 50%; transition: .2s;
+  }
+  .cc-switch input:checked + .cc-slider { background: var(--cc-orange); }
+  .cc-switch input:checked + .cc-slider::before { transform: translateX(18px); }
+  .cc-switch input:disabled + .cc-slider { background: #d1d5db; opacity: .6; cursor: not-allowed; }
+
+  #cc-modal .cc-modal-footer {
+    padding: 16px 22px 20px; border-top: 1px solid var(--cc-border);
+  }
+  #cc-modal .cc-modal-footer .cc-footer-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  #cc-modal .cc-modal-footer .cc-footer-buttons .cc-btn { flex: 1; text-align: center; }
+  #cc-modal .cc-modal-footer .cc-dpo {
+    font-size: 11px; color: #9ca3af; line-height: 1.6; border-top: 1px dashed var(--cc-border); padding-top: 10px;
+  }
+  #cc-modal .cc-modal-footer .cc-dpo a { color: var(--cc-gray); }
+
+  @media (max-width: 640px) {
+    #cc-consent-banner .cc-inner { flex-direction: column; align-items: stretch; }
+    #cc-consent-banner .cc-actions { justify-content: stretch; }
+    #cc-consent-banner .cc-actions .cc-btn { flex: 1; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================ HEADER ============================ -->
+<header class="site-header">
+  <nav class="nav">
+    <a href="#inicio" class="nav-logo"><img src="assets/logo.png" alt="Doutor Cachorrão — Pet & Vet"></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#inicio" class="ativo">Início</a></li>
+      <li><a href="#sobre">Sobre nós</a></li>
+      <li><a href="#depoimentos">Depoimentos</a></li>
+      <li><a href="#onde">Onde estamos</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" id="inicio">
+  <div class="wrap hero-grid">
+    <div class="hero-txt">
+      <h1>Bem-vindo ao<br><span class="amarelo">Doutor Cachorrão!</span></h1>
+      <p>O petshop e clínica onde cada latido, miado e rabinho abanando encontra cuidado, carinho e diversão.</p>
+      <a class="btn btn-primario js-zap" href="#">Agendar banho &amp; tosa <span class="paw">🐾</span></a>
+    </div>
+    <div class="hero-art">
+      <div class="hero-blobs">
+        <svg viewBox="0 0 460 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="150" cy="150" r="110" fill="#FFE000"/>
+          <circle cx="300" cy="120" r="90" fill="#FFEB57"/>
+          <circle cx="250" cy="270" r="120" fill="#FFE000"/>
+        </svg>
+      </div>
+      <!-- placeholder de pets: silhueta simpática enquanto não há foto recortada -->
+      <svg class="hero-pets" viewBox="0 0 440 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g fill="#2E1A05">
+          <ellipse cx="150" cy="300" rx="88" ry="92"/>
+          <ellipse cx="300" cy="260" rx="78" ry="96"/>
+        </g>
+        <g fill="#F3F0D1">
+          <circle cx="150" cy="285" r="60"/>
+          <circle cx="300" cy="250" r="52"/>
+        </g>
+        <g fill="#2E1A05">
+          <circle cx="132" cy="278" r="8"/><circle cx="170" cy="278" r="8"/>
+          <circle cx="286" cy="244" r="7"/><circle cx="316" cy="244" r="7"/>
+          <ellipse cx="151" cy="298" rx="10" ry="7"/>
+          <ellipse cx="301" cy="262" rx="8" ry="6"/>
+        </g>
+        <path d="M110 235 Q95 200 120 210 Z" fill="#2E1A05"/>
+        <path d="M190 235 Q205 200 180 210 Z" fill="#2E1A05"/>
+        <path d="M268 210 L258 175 285 200 Z" fill="#2E1A05"/>
+        <path d="M332 210 L342 175 315 200 Z" fill="#2E1A05"/>
+      </svg>
+      <span class="bubble" style="width:26px;height:26px;top:12%;left:18%"></span>
+      <span class="bubble" style="width:16px;height:16px;top:60%;left:8%;animation-delay:1s"></span>
+      <span class="bubble" style="width:20px;height:20px;top:74%;right:14%;animation-delay:.5s"></span>
+      <span class="bubble" style="width:12px;height:12px;top:20%;right:22%;animation-delay:1.4s"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ MARQUEE ============================ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <div class="marquee-group">
+      <span>Doutor Cachorrão</span><span class="paw-ico">🐾</span>
+      <span>Pet &amp; Vet</span><span class="paw-ico">🐾</span>
+      <span>Cuidado com amor</span><span class="paw-ico">🐾</span>
+      <span>Doutor Cachorrão</span><span class="paw-ico">🐾</span>
+      <span>Pet &amp; Vet</span><span class="paw-ico">🐾</span>
+      <span>Cuidado com amor</span><span class="paw-ico">🐾</span>
+    </div>
+    <div class="marquee-group">
+      <span>Doutor Cachorrão</span><span class="paw-ico">🐾</span>
+      <span>Pet &amp; Vet</span><span class="paw-ico">🐾</span>
+      <span>Cuidado com amor</span><span class="paw-ico">🐾</span>
+      <span>Doutor Cachorrão</span><span class="paw-ico">🐾</span>
+      <span>Pet &amp; Vet</span><span class="paw-ico">🐾</span>
+      <span>Cuidado com amor</span><span class="paw-ico">🐾</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ ENCONTRA TUDO ============================ -->
+<section class="encontra" id="sobre">
+  <div class="wrap">
+    <div class="encontra-inner">
+      <h2>Aqui, seu pet encontra tudo<br><span class="marrom">o que ama. E você também.</span></h2>
+      <div class="cards-4">
+        <div class="card-serv">
+          <div class="ico">
+            <dotlottie-wc src="assets/banho.lottie" class="lottie-ico" autoplay loop></dotlottie-wc>
+          </div>
+          <h3>Banho &amp; Tosa Profissional</h3>
+        </div>
+        <div class="card-serv">
+          <div class="ico">
+            <dotlottie-wc src="assets/racoes.lottie" class="lottie-ico" autoplay loop></dotlottie-wc>
+          </div>
+          <h3>Rações Premium e Naturais</h3>
+        </div>
+        <div class="card-serv">
+          <div class="ico">
+            <dotlottie-wc src="assets/vet.lottie" class="lottie-ico" autoplay loop></dotlottie-wc>
+          </div>
+          <h3>Atendimento Veterinário</h3>
+        </div>
+        <div class="card-serv">
+          <div class="ico">
+            <dotlottie-wc src="assets/acessorios.lottie" class="lottie-ico" autoplay loop></dotlottie-wc>
+          </div>
+          <h3>Acessórios, brinquedos e muito mais!</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CUIDAR COM AMOR ============================ -->
+<section class="amor">
+  <div class="wrap amor-grid">
+    <div class="amor-art">
+      <div class="orbit">
+        <svg viewBox="0 0 400 400" fill="none" stroke="#2E1A05" stroke-width="1.4" stroke-opacity=".35" aria-hidden="true"><circle cx="200" cy="200" r="150" stroke-dasharray="4 8"/></svg>
+      </div>
+      <svg class="dog" viewBox="0 0 340 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="170" cy="230" rx="110" ry="120" fill="#2E1A05"/>
+        <circle cx="170" cy="210" r="82" fill="#F3F0D1"/>
+        <path d="M100 150 L80 100 130 140 Z" fill="#2E1A05"/>
+        <path d="M240 150 L260 100 210 140 Z" fill="#2E1A05"/>
+        <circle cx="145" cy="200" r="10" fill="#2E1A05"/>
+        <circle cx="195" cy="200" r="10" fill="#2E1A05"/>
+        <ellipse cx="170" cy="228" rx="14" ry="10" fill="#2E1A05"/>
+      </svg>
+      <span class="badge badge-1">🐾</span>
+      <span class="badge badge-2">❤️</span>
+      <span class="badge badge-3">🐾</span>
+    </div>
+    <div class="amor-txt">
+      <h2>Cuidar com amor<br><span class="marrom">é nosso maior<br>diferencial.</span></h2>
+      <p>No Doutor Cachorrão, cada pet é único. Nossos profissionais são apaixonados pelo que fazem e tratam seu bichinho como parte da família. E isso você sente no primeiro contato.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SERVIÇOS ============================ -->
+<section class="servicos">
+  <div class="wrap servicos-grid">
+    <div class="servicos-tit">
+      <h2>Serviços pensados com <span class="laranja">carinho em cada detalhe</span></h2>
+    </div>
+    <div class="serv-cards">
+      <div class="serv-card">
+        <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 30h24v6a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4z"/><path d="M14 30c0-6 3-10 8-10M30 20l6-6"/><circle cx="36" cy="12" r="3"/></svg></div>
+        <h3>Banho &amp; Tosa Profissional</h3>
+        <p>Shampoo de qualidade, tosa higiênica e muito carinho.</p>
+      </div>
+      <div class="serv-card">
+        <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 10v10M19 15h10"/><circle cx="24" cy="30" r="10"/><path d="M20 30h8M24 26v8"/></svg></div>
+        <h3>Consultas Veterinárias</h3>
+        <p>Prevenção, check-up e atendimento de confiança.</p>
+      </div>
+      <div class="serv-card">
+        <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 24 24 12l14 12v14a2 2 0 0 1-2 2H12a2 2 0 0 1-2-2z"/><circle cx="24" cy="30" r="5"/></svg></div>
+        <h3>Daycare &amp; Hotelzinho</h3>
+        <p>Seu pet bem cuidado enquanto você trabalha ou viaja.</p>
+      </div>
+      <div class="serv-card">
+        <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18a4 4 0 1 1 0-1M34 18a4 4 0 1 0 0-1M18 36a6 6 0 0 1 12 0z"/><path d="M16 27c0-5 3-8 8-8s8 3 8 8"/></svg></div>
+        <h3>Produtos &amp; Acessórios</h3>
+        <p>Uma loja completa cheia de novidades e fofuras.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ DEPOIMENTOS ============================ -->
+<section class="depo" id="depoimentos">
+  <div class="wrap">
+    <div class="depo-inner">
+      <div class="depo-tit">
+        <h2>Olha o que os tutores <span class="amarelo">estão dizendo por aí!</span></h2>
+      </div>
+      <div class="depo-cards">
+        <div class="depo-card">
+          <p>"O Thor ama o Doutor Cachorrão. Ele entra e nem olha pra trás!"</p>
+          <div class="depo-autor"><span class="dot"></span><span><b>Carla</b>, tutora do Thor</span></div>
+        </div>
+        <div class="depo-card">
+          <p>"Atendimento nota mil. Levo minha gatinha de olhos fechados."</p>
+          <div class="depo-autor"><span class="dot"></span><span><b>Rafael</b>, tutor da Mel</span></div>
+        </div>
+        <div class="depo-card">
+          <p>"Banho e tosa impecáveis e um carinho que não tem preço."</p>
+          <div class="depo-autor"><span class="dot"></span><span><b>Juliana</b>, tutora da Nina</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ VISITA + MAPA ============================ -->
+<section class="visita" id="onde">
+  <div class="wrap">
+    <h2>Bora dar uma voltinha até <span class="laranja">o Doutor Cachorrão?</span></h2>
+    <p>Estamos te esperando com um mimo especial na primeira visita!</p>
+    <a class="btn btn-primario js-zap" href="#">Falar no WhatsApp <span class="paw">🐾</span></a>
+  </div>
+  <div class="mapa-wrap">
+    <iframe
+      title="Localização Doutor Cachorrão"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      src="https://www.google.com/maps?q=Rua+Major+Correa,+719,+Centro,+Vargem+Grande+do+Sul+-+SP&output=embed">
+    </iframe>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <img src="assets/logo.png" alt="Doutor Cachorrão — Pet & Vet">
+      <p>Onde seu pet é mais que cliente: é parte da família.</p>
+    </div>
+    <div>
+      <h4>Navegue</h4>
+      <ul>
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#sobre">Sobre nós</a></li>
+        <li><a href="#depoimentos">Depoimentos</a></li>
+        <li><a href="#onde">Onde estamos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Serviços</h4>
+      <ul>
+        <li>Banho &amp; Tosa Profissional</li>
+        <li>Consultas Veterinárias</li>
+        <li>Daycare &amp; Hotelzinho</li>
+        <li>Produtos &amp; Acessórios</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contato</h4>
+      <ul class="footer-contato">
+        <li><span class="ic">📍</span><span>Rua Major Correa, 719 — Centro<br>Vargem Grande do Sul-SP · 13880-021</span></li>
+        <li><span class="ic">📱</span><a class="js-zap" href="#">(19) 99763-2326</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© <span id="ano"></span> Doutor Cachorrão — Pet &amp; Vet. Todos os direitos reservados. · <a href="politica-privacidade.html">Política de Privacidade</a></span>
+    <span>Desenvolvido por Agência PH Silva</span>
+  </div>
+</footer>
+
+<!-- ============================ SCHEMA.ORG ============================ -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"VeterinaryCare",
+  "name":"Doutor Cachorrão — Pet & Vet",
+  "description":"Petshop e clínica veterinária: banho e tosa, consultas, daycare, hotelzinho e loja completa.",
+  "telephone":"+5519997632326",
+  "address":{
+    "@type":"PostalAddress",
+    "streetAddress":"Rua Major Correa, 719, Centro",
+    "addressLocality":"Vargem Grande do Sul",
+    "addressRegion":"SP",
+    "postalCode":"13880-021",
+    "addressCountry":"BR"
+  },
+  "areaServed":"Vargem Grande do Sul-SP e região",
+  "priceRange":"$$"
+}
+</script>
+
+<!-- ============================ SCRIPTS ============================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script>
+/* ===== WhatsApp centralizado ===== */
+const ZAP_NUMERO = "5519997632326";
+const ZAP_MSG = "Ola! Vim pelo site do Doutor Cachorrao e gostaria de mais informacoes.";
+document.querySelectorAll(".js-zap").forEach(el=>{
+  el.setAttribute("href", `https://wa.me/${ZAP_NUMERO}?text=${encodeURIComponent(ZAP_MSG)}`);
+  el.setAttribute("target","_blank");
+  el.setAttribute("rel","noopener");
+});
+
+/* ===== Ano no footer ===== */
+document.getElementById("ano").textContent = new Date().getFullYear();
+
+/* ===== Menu mobile ===== */
+const toggle = document.querySelector(".nav-toggle");
+const links = document.querySelector(".nav-links");
+toggle.addEventListener("click", ()=>{
+  const aberto = links.classList.toggle("aberto");
+  toggle.setAttribute("aria-expanded", aberto);
+});
+links.querySelectorAll("a").forEach(a=>a.addEventListener("click", ()=>links.classList.remove("aberto")));
+
+/* ===== Lenis + GSAP com fix de touch =====
+   Em dispositivos touch, Lenis briga com o scroll nativo.
+   Detectamos "mouse real" via matchMedia (não maxTouchPoints,
+   que dá falso positivo em notebooks touch com Windows). */
+const podeSmoothScroll = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+gsap.registerPlugin(ScrollTrigger);
+
+if (podeSmoothScroll){
+  const lenis = new Lenis({ duration:1.2, easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)), wheelMultiplier:0.9 });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t=>lenis.raf(t*1000));
+  gsap.ticker.lagSmoothing(0);
+} else {
+  ScrollTrigger.normalizeScroll(true);
+}
+
+/* ===== Reveal on scroll ===== */
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  gsap.utils.toArray(".card-serv,.serv-card,.depo-card,.amor-txt,.servicos-tit").forEach(el=>{
+    gsap.from(el,{
+      y:40, opacity:0, duration:.8, ease:"power2.out",
+      scrollTrigger:{ trigger:el, start:"top 85%" }
+    });
+  });
+}
+
+/* ===== Acessibilidade: se o usuario pediu menos movimento, nao roda as lotties ===== */
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('.lottie-ico').forEach(el=>{
+    el.removeAttribute('autoplay');
+    el.removeAttribute('loop');
+  });
+}
+</script>
+
+<!-- ===== Banner de consentimento de cookies (LGPD) ===== -->
+<!-- Banner principal -->
+  <div id="cc-consent-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies e dados pessoais" class="cc-visible">
+    <div class="cc-inner">
+      <img class="cc-logo" src="assets/logo.png" alt="Doutor Cachorrão Pet e Vet">
+      <div class="cc-text">
+        Usamos cookies e dados como WhatsApp para o funcionamento do site, atendimento e, mediante o seu consentimento específico, para campanhas de publicidade no Facebook/Instagram (Meta) e mensagens promocionais. Você pode aceitar, recusar ou personalizar sua escolha a qualquer momento. Saiba mais na nossa
+        <a href="politica-privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.
+      </div>
+      <div class="cc-actions">
+        <button type="button" class="cc-btn cc-btn-secondary" id="cc-btn-reject">Rejeitar não essenciais</button>
+        <button type="button" class="cc-btn cc-btn-secondary" id="cc-btn-customize">Personalizar preferências</button>
+        <button type="button" class="cc-btn cc-btn-primary" id="cc-btn-accept-all">Aceitar todos</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botão flutuante para reabrir as preferências -->
+  <button type="button" id="cc-reopen-btn" aria-haspopup="dialog">🍪 Preferências de cookies</button>
+
+  <!-- Modal de preferências granulares -->
+  <div id="cc-modal-overlay">
+    <div id="cc-modal" role="dialog" aria-modal="true" aria-labelledby="cc-modal-title">
+      <div class="cc-modal-head">
+        <img src="assets/logo.png" alt="Doutor Cachorrão Pet e Vet">
+        <h2 id="cc-modal-title">Preferências de privacidade</h2>
+        <button type="button" class="cc-modal-close" id="cc-modal-close" aria-label="Fechar">×</button>
+      </div>
+      <div class="cc-modal-body">
+        <p class="cc-modal-intro">Escolha, categoria por categoria, quais dados a Clínica Dr. Cachorrão pode tratar. Os cookies necessários não podem ser desativados, pois garantem o funcionamento básico do site. As demais categorias exigem o seu consentimento específico (art. 8º da LGPD) e podem ser alteradas ou revogadas a qualquer momento, sem prejuízo ao seu atendimento.</p>
+
+        <div class="cc-category">
+          <div class="cc-category-info">
+            <span class="cc-category-tag">Sempre ativo</span>
+            <h3>Cookies necessários</h3>
+            <p>Essenciais para o funcionamento, navegação e segurança do site. Não podem ser desativados.</p>
+          </div>
+          <label class="cc-switch">
+            <input type="checkbox" id="cc-toggle-necessary" checked="" disabled="">
+            <span class="cc-slider"></span>
+          </label>
+        </div>
+
+        <div class="cc-category">
+          <div class="cc-category-info">
+            <span class="cc-category-tag">Opcional</span>
+            <h3>Desempenho e análise (analytics)</h3>
+            <p>Nos ajudam a entender como o site é utilizado, para melhorar a navegação e o conteúdo.</p>
+          </div>
+          <label class="cc-switch">
+            <input type="checkbox" id="cc-toggle-analytics">
+            <span class="cc-slider"></span>
+          </label>
+        </div>
+
+        <div class="cc-category">
+          <div class="cc-category-info">
+            <span class="cc-category-tag">Opcional — consentimento específico</span>
+            <h3>Marketing e publicidade (Meta / Instagram)</h3>
+            <p>Cookies e identificadores (ex.: Meta Pixel) usados para anúncios segmentados, remarketing e públicos personalizados no Facebook e Instagram.</p>
+          </div>
+          <label class="cc-switch">
+            <input type="checkbox" id="cc-toggle-marketing">
+            <span class="cc-slider"></span>
+          </label>
+        </div>
+
+        <div class="cc-category">
+          <div class="cc-category-info">
+            <span class="cc-category-tag">Opcional — consentimento específico</span>
+            <h3>Comunicação via WhatsApp</h3>
+            <p>Recebimento de mensagens promocionais e automações de marketing pelo WhatsApp. Mensagens operacionais sobre seu agendamento/atendimento não dependem desta opção.</p>
+          </div>
+          <label class="cc-switch">
+            <input type="checkbox" id="cc-toggle-whatsapp">
+            <span class="cc-slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="cc-modal-footer">
+        <div class="cc-footer-buttons">
+          <button type="button" class="cc-btn cc-btn-secondary" id="cc-btn-save-prefs">Salvar preferências</button>
+          <button type="button" class="cc-btn cc-btn-primary" id="cc-btn-accept-all-modal">Aceitar todos</button>
+        </div>
+        <div class="cc-dpo">
+          Controlador dos dados: Doutor Cachorrão Pet e Vet Ltda. Encarregado de Proteção de Dados (DPO): Carp Advogados — Bárbara Karen Carvalho Pires, OAB/SP nº 434.196 — <a href="mailto:barabara@carpadvogados.com">barabara@carpadvogados.com</a>. Consulte a íntegra na <a href="politica-privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var STORAGE_KEY = "cachorrao_consent";
+    var CONSENT_VERSION = "1.0";
+
+    var banner = document.getElementById("cc-consent-banner");
+    var reopenBtn = document.getElementById("cc-reopen-btn");
+    var overlay = document.getElementById("cc-modal-overlay");
+
+    var toggles = {
+      necessary: document.getElementById("cc-toggle-necessary"),
+      analytics: document.getElementById("cc-toggle-analytics"),
+      marketing: document.getElementById("cc-toggle-marketing"),
+      whatsapp: document.getElementById("cc-toggle-whatsapp")
+    };
+
+    function readConsent() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) { return null; }
+    }
+
+    function writeConsent(consent) {
+      consent.version = CONSENT_VERSION;
+      consent.timestamp = new Date().toISOString();
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(consent)); } catch (e) {}
+      // Evento que o restante do site pode escutar para ligar/desligar scripts de terceiros.
+      // Exemplo de uso real (fora deste arquivo):
+      //   document.addEventListener('cachorraoConsentUpdated', function (ev) {
+      //     if (ev.detail.marketing) { /* carregar Meta Pixel aqui */ }
+      //     if (ev.detail.whatsapp)  { /* liberar automações/promoções de WhatsApp */ }
+      //   });
+      document.dispatchEvent(new CustomEvent("cachorraoConsentUpdated", { detail: consent }));
+      applyConsentSideEffects(consent);
+    }
+
+    function applyConsentSideEffects(consent) {
+      // ---------------------------------------------------------------
+      // INTEGRAÇÃO: só carregue scripts de terceiros DEPOIS do consentimento.
+      // Substitua os comentários abaixo pela integração real do site.
+      // ---------------------------------------------------------------
+      if (consent.marketing) {
+        // Exemplo: injetar o Meta Pixel somente aqui.
+        // !function(f,b,e,v,n,t,s){...}(window, document,'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        // fbq('init', 'SEU_PIXEL_ID');
+        // fbq('track', 'PageView');
+      }
+      if (consent.whatsapp) {
+        // Exemplo: liberar disparo de campanhas/automações promocionais via WhatsApp Business API.
+      }
+      if (consent.analytics) {
+        // Exemplo: inicializar ferramenta de analytics.
+      }
+    }
+
+    function showBanner() { banner.classList.add("cc-visible"); reopenBtn.classList.remove("cc-visible"); }
+    function hideBanner() { banner.classList.remove("cc-visible"); reopenBtn.classList.add("cc-visible"); }
+    function openModal() {
+      var c = readConsent() || { necessary: true, analytics: false, marketing: false, whatsapp: false };
+      toggles.analytics.checked = !!c.analytics;
+      toggles.marketing.checked = !!c.marketing;
+      toggles.whatsapp.checked = !!c.whatsapp;
+      overlay.classList.add("cc-visible");
+    }
+    function closeModal() { overlay.classList.remove("cc-visible"); }
+
+    document.getElementById("cc-btn-accept-all").addEventListener("click", function () {
+      writeConsent({ necessary: true, analytics: true, marketing: true, whatsapp: true });
+      hideBanner();
+    });
+    document.getElementById("cc-btn-accept-all-modal").addEventListener("click", function () {
+      writeConsent({ necessary: true, analytics: true, marketing: true, whatsapp: true });
+      hideBanner(); closeModal();
+    });
+    document.getElementById("cc-btn-reject").addEventListener("click", function () {
+      writeConsent({ necessary: true, analytics: false, marketing: false, whatsapp: false });
+      hideBanner();
+    });
+    document.getElementById("cc-btn-customize").addEventListener("click", openModal);
+    document.getElementById("cc-modal-close").addEventListener("click", closeModal);
+    document.getElementById("cc-btn-save-prefs").addEventListener("click", function () {
+      writeConsent({
+        necessary: true,
+        analytics: toggles.analytics.checked,
+        marketing: toggles.marketing.checked,
+        whatsapp: toggles.whatsapp.checked
+      });
+      hideBanner(); closeModal();
+    });
+    reopenBtn.addEventListener("click", openModal);
+    overlay.addEventListener("click", function (e) { if (e.target === overlay) closeModal(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
+
+    // Inicialização: mostra o banner se ainda não há decisão salva;
+    // caso já exista, aplica silenciosamente o consentimento salvo.
+    var existing = readConsent();
+    if (!existing) {
+      showBanner();
+    } else {
+      reopenBtn.classList.add("cc-visible");
+      applyConsentSideEffects(existing);
+    }
+  })();
+  </script>
+</body>
+</html>
