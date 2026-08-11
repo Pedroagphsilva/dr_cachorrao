@@ -120,6 +120,10 @@ h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
   background:radial-gradient(circle at 78% 34%, rgba(255,224,0,.35), transparent 42%);
   pointer-events:none;
 }
+#hero-particles{
+  position:absolute;inset:0;width:100%;height:100%;
+  z-index:1;pointer-events:none;
+}
 .hero-grid{
   position:relative;z-index:2;
   display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;
@@ -281,6 +285,10 @@ h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
 @media(max-width:900px){
   .hero-grid,.amor-grid,.servicos-grid,.depo-inner{grid-template-columns:1fr}
   .hero-art{min-height:340px;order:-1}
+  .hero-txt .btn-primario{margin-bottom:40px;background:var(--creme);color:var(--marrom)}
+  .hero-txt .btn-primario:hover{background:var(--creme-claro)}
+  .hero-txt .btn-primario .paw{background:var(--amarelo)}
+  .amor-art .dog{width:92%;max-width:none;filter:none}
   .cards-4{grid-template-columns:1fr 1fr}
   .footer-grid{grid-template-columns:1fr 1fr}
   .depo-card:nth-child(2){align-self:auto}
@@ -291,7 +299,9 @@ h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
     display:none;
   }
   .nav-links.aberto{display:flex}
-  .nav-links a{text-align:center}
+  .nav-links a{text-align:center;color:var(--creme)}
+  .nav-links a:hover{background:rgba(255,224,0,.16);color:var(--amarelo)}
+  .nav-links a.ativo{background:var(--laranja);color:#fff}
   .nav-toggle{display:block}
 }
 @media(max-width:560px){
@@ -299,7 +309,27 @@ h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
   .footer-grid{grid-template-columns:1fr}
   .serv-cards{grid-template-columns:1fr}
   .encontra-inner{padding:36px 22px}
+  .encontra h2{font-size:1.35rem}
   .depo-inner{padding:40px 24px}
+
+  /* Botao do hero: respiro na base + cor creme */
+  .hero-txt .btn-primario{
+    margin-bottom:40px;
+    background:var(--creme);color:var(--marrom);
+    box-shadow:0 10px 24px rgba(46,26,5,.25);
+  }
+  .hero-txt .btn-primario:hover{background:var(--creme-claro)}
+  .hero-txt .btn-primario .paw{background:var(--laranja)}
+
+  /* Titulo "Aqui seu pet encontra tudo" na mesma linha */
+  .encontra h2{font-size:1.5rem}
+
+  /* image2 maior e sem sombra */
+  .amor-art .dog{width:92%;max-width:none;filter:none}
+
+  /* Banner de cookie: remove o vao entre texto e botoes */
+  #cc-consent-banner .cc-inner{gap:12px}
+  #cc-consent-banner .cc-text{flex:1 1 auto}
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -420,10 +450,11 @@ h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
   #cc-modal .cc-modal-footer .cc-dpo a { color: var(--cc-gray); }
 
   @media (max-width: 640px) {
-    #cc-consent-banner .cc-inner { flex-direction: column; align-items: stretch; gap: 12px; }
+    #cc-consent-banner .cc-inner { flex-direction: column; align-items: stretch; gap: 10px; }
     #cc-consent-banner .cc-logo { align-self: flex-start; }
-    #cc-consent-banner .cc-actions { justify-content: stretch; margin-left: 0; }
-    #cc-consent-banner .cc-actions .cc-btn { flex: 1; text-align: center; }
+    #cc-consent-banner .cc-text { flex: 0 0 auto; }
+    #cc-consent-banner .cc-actions { justify-content: stretch; margin-left: 0; gap: 8px; }
+    #cc-consent-banner .cc-actions .cc-btn { flex: 1 1 100%; text-align: center; }
   }
 </style>
 </head>
@@ -447,6 +478,7 @@ h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
 
 <!-- ============================ HERO ============================ -->
 <section class="hero" id="inicio">
+  <canvas id="hero-particles" aria-hidden="true"></canvas>
   <div class="wrap hero-grid">
     <div class="hero-txt">
       <h1>Bem-vindo ao<br><span class="amarelo">Doutor Cachorrão!</span></h1>
@@ -739,6 +771,103 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     el.removeAttribute('loop');
   });
 }
+
+/* ===== Particulas de pets no hero (patinhas + ossinhos) que reagem ao scroll ===== */
+(function(){
+  var reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduz) return;
+
+  var hero = document.getElementById('inicio');
+  var canvas = document.getElementById('hero-particles');
+  if (!hero || !canvas) return;
+  var ctx = canvas.getContext('2d');
+
+  var glifos = ['🐾','🦴','🐾','🐾','🦴']; // pegadas e ossinhos
+  var particulas = [];
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var W = 0, H = 0;
+  var scrollAnterior = window.scrollY;
+  var empurraoScroll = 0;
+
+  function dimensiona(){
+    W = hero.clientWidth;
+    H = hero.clientHeight;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+
+  function criaParticulas(){
+    // quantidade proporcional a largura (menos no mobile)
+    var qtd = W < 640 ? 12 : 20;
+    particulas = [];
+    for (var i=0;i<qtd;i++){
+      particulas.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        tam: 14 + Math.random()*22,
+        vx: (Math.random()-0.5)*0.25,
+        vy: 0.15 + Math.random()*0.35,
+        giro: Math.random()*Math.PI*2,
+        vGiro: (Math.random()-0.5)*0.02,
+        alpha: 0.10 + Math.random()*0.22,
+        glifo: glifos[(Math.random()*glifos.length)|0]
+      });
+    }
+  }
+
+  function anima(){
+    ctx.clearRect(0,0,W,H);
+    for (var i=0;i<particulas.length;i++){
+      var p = particulas[i];
+      p.x += p.vx;
+      // o scroll "empurra" as particulas: interacao com a rolagem
+      p.y += p.vy + empurraoScroll;
+      p.giro += p.vGiro;
+
+      // reaparece do outro lado quando sai da area
+      if (p.y > H + 30){ p.y = -30; p.x = Math.random()*W; }
+      if (p.y < -40){ p.y = H + 20; p.x = Math.random()*W; }
+      if (p.x > W + 30) p.x = -30;
+      if (p.x < -30) p.x = W + 30;
+
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.giro);
+      ctx.font = p.tam + 'px serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(p.glifo, 0, 0);
+      ctx.restore();
+    }
+    // o empurrao do scroll decai suavemente (inercia)
+    empurraoScroll *= 0.90;
+    requestAnimationFrame(anima);
+  }
+
+  // captura a variacao de scroll e converte em empurrao vertical das particulas
+  window.addEventListener('scroll', function(){
+    var delta = window.scrollY - scrollAnterior;
+    empurraoScroll += delta * 0.03;
+    // limita para nao exagerar
+    if (empurraoScroll > 4) empurraoScroll = 4;
+    if (empurraoScroll < -4) empurraoScroll = -4;
+    scrollAnterior = window.scrollY;
+  }, { passive:true });
+
+  var resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function(){ dimensiona(); criaParticulas(); }, 150);
+  });
+
+  dimensiona();
+  criaParticulas();
+  requestAnimationFrame(anima);
+})();
 </script>
 
 <!-- ===== Banner de consentimento de cookies (LGPD) ===== -->
@@ -859,32 +988,16 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
       consent.version = CONSENT_VERSION;
       consent.timestamp = new Date().toISOString();
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(consent)); } catch (e) {}
-      // Evento que o restante do site pode escutar para ligar/desligar scripts de terceiros.
-      // Exemplo de uso real (fora deste arquivo):
-      //   document.addEventListener('cachorraoConsentUpdated', function (ev) {
-      //     if (ev.detail.marketing) { /* carregar Meta Pixel aqui */ }
-      //     if (ev.detail.whatsapp)  { /* liberar automações/promoções de WhatsApp */ }
-      //   });
       document.dispatchEvent(new CustomEvent("cachorraoConsentUpdated", { detail: consent }));
       applyConsentSideEffects(consent);
     }
 
     function applyConsentSideEffects(consent) {
-      // ---------------------------------------------------------------
-      // INTEGRAÇÃO: só carregue scripts de terceiros DEPOIS do consentimento.
-      // Substitua os comentários abaixo pela integração real do site.
-      // ---------------------------------------------------------------
       if (consent.marketing) {
-        // Exemplo: injetar o Meta Pixel somente aqui.
-        // !function(f,b,e,v,n,t,s){...}(window, document,'script', 'https://connect.facebook.net/en_US/fbevents.js');
-        // fbq('init', 'SEU_PIXEL_ID');
-        // fbq('track', 'PageView');
       }
       if (consent.whatsapp) {
-        // Exemplo: liberar disparo de campanhas/automações promocionais via WhatsApp Business API.
       }
       if (consent.analytics) {
-        // Exemplo: inicializar ferramenta de analytics.
       }
     }
 
@@ -926,8 +1039,6 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     overlay.addEventListener("click", function (e) { if (e.target === overlay) closeModal(); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
 
-    // Inicialização: mostra o banner se ainda não há decisão salva;
-    // caso já exista, aplica silenciosamente o consentimento salvo.
     var existing = readConsent();
     if (!existing) {
       showBanner();
