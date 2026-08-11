@@ -88,12 +88,12 @@ h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
    ============================================================ */
 .site-header{position:absolute;top:0;left:0;right:0;z-index:50;padding-top:22px}
 .nav{
-  max-width:var(--maxw);width:calc(100% - 48px);margin:0 auto;
+  max-width:var(--maxw);margin-inline:auto;
   display:flex;align-items:center;justify-content:space-between;gap:24px;
   background:rgba(243,240,209,.92);backdrop-filter:blur(10px);
   border:1px solid rgba(46,26,5,.10);
   border-radius:var(--pill);padding:12px 16px 12px 26px;
-  box-shadow:0 8px 24px rgba(46,26,5,.12);
+  margin-inline:24px;box-shadow:0 8px 24px rgba(46,26,5,.12);
 }
 .nav-logo img{height:42px;width:auto}
 .nav-links{display:flex;align-items:center;gap:8px;list-style:none}
@@ -132,6 +132,7 @@ h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
 .hero-blobs svg{width:90%;max-width:460px;filter:drop-shadow(0 20px 40px rgba(46,26,5,.25))}
 .hero-pets{
   position:relative;z-index:2;width:88%;max-width:440px;margin-inline:auto;
+  height:auto;display:block;
   filter:drop-shadow(0 24px 30px rgba(46,26,5,.3));
 }
 .bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);animation:float 6s ease-in-out infinite}
@@ -186,7 +187,7 @@ h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
 .amor{background:var(--amarelo);padding:20px 0 100px}
 .amor-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
 .amor-art{position:relative;display:grid;place-items:center;min-height:360px}
-.amor-art .dog{width:74%;max-width:340px;position:relative;z-index:2;filter:drop-shadow(0 18px 24px rgba(46,26,5,.22))}
+.amor-art .dog{width:74%;max-width:340px;height:auto;display:block;position:relative;z-index:2;filter:drop-shadow(0 18px 24px rgba(46,26,5,.22))}
 .orbit{position:absolute;inset:0;display:grid;place-items:center;z-index:1}
 .orbit svg{width:82%;max-width:400px}
 .badge{
@@ -321,34 +322,32 @@ h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
     position: fixed;
     left: 0; right: 0; bottom: 0;
     z-index: 99999;
-    background: rgba(243,240,209,.88);
-    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-    color: var(--cc-ink);
-    border-top: 1px solid rgba(46,26,5,.12);
+    background: var(--cc-ink);
+    color: #f3f4f6;
     padding: 18px 22px;
-    box-shadow: 0 -4px 18px rgba(46,26,5,.15);
+    box-shadow: 0 -4px 18px rgba(0,0,0,.25);
     font-family: -apple-system, "Segoe UI", Arial, sans-serif;
     display: none;
   }
   #cc-consent-banner.cc-visible { display: block; }
   #cc-consent-banner .cc-inner {
     max-width: 1100px; margin: 0 auto;
-    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
   }
-  #cc-consent-banner .cc-logo { height: 30px; width: auto; flex-shrink: 0; }
-  #cc-consent-banner .cc-text { flex: 1 1 320px; min-width: 0; font-size: 13.5px; line-height: 1.55; color: var(--cc-ink); }
-  #cc-consent-banner .cc-text a { color: var(--cc-orange-dark); text-decoration: underline; }
-  #cc-consent-banner .cc-actions { display: flex; gap: 10px; flex-wrap: wrap; flex-shrink: 0; margin-left: auto; }
+  #cc-consent-banner .cc-logo { height: 30px; flex-shrink: 0; }
+  #cc-consent-banner .cc-text { flex: 1 1 380px; font-size: 13.5px; line-height: 1.55; color: #e5e7eb; }
+  #cc-consent-banner .cc-text a { color: var(--cc-orange); text-decoration: underline; }
+  #cc-consent-banner .cc-actions { display: flex; gap: 10px; flex-wrap: wrap; flex-shrink: 0; }
 
   .cc-btn {
     font-family: inherit; font-size: 13.5px; font-weight: 600; border-radius: 7px;
     padding: 10px 16px; cursor: pointer; border: 1px solid transparent; white-space: nowrap;
   }
-  .cc-btn-primary { background: var(--cc-orange); color: #fff; }
+  .cc-btn-primary { background: var(--cc-orange); color: #1c1c1c; }
   .cc-btn-primary:hover { background: var(--cc-orange-dark); }
-  .cc-btn-secondary { background: transparent; color: var(--cc-ink); border-color: rgba(46,26,5,.35); }
-  .cc-btn-secondary:hover { background: rgba(46,26,5,.06); }
-  .cc-btn-link { background: transparent; color: var(--cc-ink); text-decoration: underline; padding: 10px 6px; }
+  .cc-btn-secondary { background: transparent; color: #f3f4f6; border-color: #4b5563; }
+  .cc-btn-secondary:hover { background: rgba(255,255,255,.08); }
+  .cc-btn-link { background: transparent; color: #f3f4f6; text-decoration: underline; padding: 10px 6px; }
 
   /* Botão flutuante para reabrir preferências a qualquer momento */
   #cc-reopen-btn {
@@ -419,9 +418,8 @@ h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
   #cc-modal .cc-modal-footer .cc-dpo a { color: var(--cc-gray); }
 
   @media (max-width: 640px) {
-    #cc-consent-banner .cc-inner { flex-direction: column; align-items: stretch; gap: 12px; }
-    #cc-consent-banner .cc-logo { align-self: flex-start; }
-    #cc-consent-banner .cc-actions { justify-content: stretch; margin-left: 0; }
+    #cc-consent-banner .cc-inner { flex-direction: column; align-items: stretch; }
+    #cc-consent-banner .cc-actions { justify-content: stretch; }
     #cc-consent-banner .cc-actions .cc-btn { flex: 1; text-align: center; }
   }
 </style>
@@ -461,26 +459,7 @@ h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
         </svg>
       </div>
       <!-- placeholder de pets: silhueta simpática enquanto não há foto recortada -->
-      <svg class="hero-pets" viewBox="0 0 440 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <g fill="#2E1A05">
-          <ellipse cx="150" cy="300" rx="88" ry="92"/>
-          <ellipse cx="300" cy="260" rx="78" ry="96"/>
-        </g>
-        <g fill="#F3F0D1">
-          <circle cx="150" cy="285" r="60"/>
-          <circle cx="300" cy="250" r="52"/>
-        </g>
-        <g fill="#2E1A05">
-          <circle cx="132" cy="278" r="8"/><circle cx="170" cy="278" r="8"/>
-          <circle cx="286" cy="244" r="7"/><circle cx="316" cy="244" r="7"/>
-          <ellipse cx="151" cy="298" rx="10" ry="7"/>
-          <ellipse cx="301" cy="262" rx="8" ry="6"/>
-        </g>
-        <path d="M110 235 Q95 200 120 210 Z" fill="#2E1A05"/>
-        <path d="M190 235 Q205 200 180 210 Z" fill="#2E1A05"/>
-        <path d="M268 210 L258 175 285 200 Z" fill="#2E1A05"/>
-        <path d="M332 210 L342 175 315 200 Z" fill="#2E1A05"/>
-      </svg>
+      <img class="hero-pets" src="assets/image1.png" alt="Cachorro e gato do Doutor Cachorrão">
       <span class="bubble" style="width:26px;height:26px;top:12%;left:18%"></span>
       <span class="bubble" style="width:16px;height:16px;top:60%;left:8%;animation-delay:1s"></span>
       <span class="bubble" style="width:20px;height:20px;top:74%;right:14%;animation-delay:.5s"></span>
@@ -553,15 +532,7 @@ h1,h2,h3,h4{font-family:var(--ff-display);line-height:1.1;font-weight:800}
       <div class="orbit">
         <svg viewBox="0 0 400 400" fill="none" stroke="#2E1A05" stroke-width="1.4" stroke-opacity=".35" aria-hidden="true"><circle cx="200" cy="200" r="150" stroke-dasharray="4 8"/></svg>
       </div>
-      <svg class="dog" viewBox="0 0 340 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <ellipse cx="170" cy="230" rx="110" ry="120" fill="#2E1A05"/>
-        <circle cx="170" cy="210" r="82" fill="#F3F0D1"/>
-        <path d="M100 150 L80 100 130 140 Z" fill="#2E1A05"/>
-        <path d="M240 150 L260 100 210 140 Z" fill="#2E1A05"/>
-        <circle cx="145" cy="200" r="10" fill="#2E1A05"/>
-        <circle cx="195" cy="200" r="10" fill="#2E1A05"/>
-        <ellipse cx="170" cy="228" rx="14" ry="10" fill="#2E1A05"/>
-      </svg>
+      <img class="dog" src="assets/image2.png" alt="Cachorro do Doutor Cachorrão">
       <span class="badge badge-1">🐾</span>
       <span class="badge badge-2">❤️</span>
       <span class="badge badge-3">🐾</span>
